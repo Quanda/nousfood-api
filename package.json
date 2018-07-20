@@ -4,7 +4,8 @@
   "description": "api for nousfood",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "mocha --exit",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
