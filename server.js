@@ -49,7 +49,6 @@ app.use('/api/signup', signupRouter);
 
 
 
-
 // set a catchall for 404 requests
 app.use('*', (req, res) => {
     return res.status(404).json({ message: 'Aint nothin here' });
