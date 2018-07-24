@@ -10,19 +10,13 @@ const NootropicSchema = mongoose.Schema({
     substance: String,
     how_to_take: String,
     supports: [
-        String
+        String 
     ],
     notes: [
         String
     ]
 });
 
-const Stack = mongoose.model('Nootropic', NootropicSchema);
+const Nootropics = mongoose.model('Nootropic', NootropicSchema);
 
-module.exports = { Nootropic };
-
-
-
-
-
-
+module.exports = { Nootropics };

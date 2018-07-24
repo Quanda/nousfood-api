@@ -1,22 +1,24 @@
 'use strict';
 
-const express = require('express');
-const app = express();
-const cors = require('cors');
-const { CLIENT_ORIGIN } = require('./config');
-
 // load packages
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
-//const passport = require('passport');
+const cors = require('cors');
+const passport = require('passport');
 
-// load routers and auth strategies
-//const { router: usersRouter } = require('./users');
-//const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
+// load routers
+const { router: authRouter } = require('./routers/auth');
+const { router: userRouter } = require('./routers/user');
+const { router: signupRouter } = require('./routers/signup');
+const { router: nootropicLibraryRouter} = require('./routers/nootropicLibrary');
+const { router: stackLibraryRouter} = require('./routers/stackLibrary');
 
-// load config
-const { PORT, DATABASE_URL } = require('./config');
+// load auth strategies
+const { localStrategy, jwtStrategy } = require('./authStrategies/user');
+
+// load config details
+const { PORT, DATABASE_URL, CLIENT_ORIGIN } = require('./config');
 
 mongoose.Promise = global.Promise;
 
@@ -33,9 +35,22 @@ app.use(
     })
 );
 
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
+// ROUTES
+app.use('/api/nootropics', nootropicLibraryRouter);
+app.use('/api/stacks', stackLibraryRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/:username', userRouter);
+app.use('/api/signup', signupRouter);
+
+
+
+
+// set a catchall for 404 requests
 app.use('*', (req, res) => {
     return res.status(404).json({ message: 'Aint nothin here' });
 });

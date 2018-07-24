@@ -1,22 +1,26 @@
 'use strict';
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+const Stack = require('./stack');
+const StackSchema = mongoose.model('Stack').schema
 
 mongoose.Promise = global.Promise;
 
 const UserSchema = mongoose.Schema({
-    userName: { type: String, required: true, unique: true},
-    firstName: {type: String, default: ''},
-    lastName: {type: String, default: ''},
+    username: { type: String, required: false, default: '', unique: true},
+    firstname: {type: String, required: true},
+    lastname: {type: String, required: true},
+    email: {type: String, required: true, unique: true},
     password: { type: String, required: true},
-    savedStacks: [Stack]
+    saved_stacks: [StackSchema]
 });
 
 UserSchema.methods.serialize = function() {
   return {
+    email: this.email || '',
     username: this.username || '',
-    firstName: this.firstName || '',
-    lastName: this.lastName || ''
+    firstname: this.firstname || '',
+    lastname: this.lastname || ''
   };
 };
 
