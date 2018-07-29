@@ -10,6 +10,19 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.use(jsonParser);
 
+// GET user data
+// A protected endpoint which needs a valid JWT to access it
+router.get('/', jwtAuth, (req, res) => {
+  const username = req.user.username;
+
+  // return all stacks
+  return User.findOne({username})
+  .then( (data) => res.json(data))
+  .catch( err => {
+    return res.status(500).json({message: `Internal server error`})
+  });
+})
+
 // GET saved stacks
 // A protected endpoint which needs a valid JWT to access it
 router.get('/stacks', jwtAuth, (req, res) => {
@@ -38,7 +51,6 @@ router.get('/stacks/:code', jwtAuth, (req, res) => {
   .then( data =>  {
       stack = data.saved_stacks.find(stack => stack.code = code)
       stack ? res.json(stack) : res.sendStatus(404);
-      
   })
   .catch( err => {
     console.error(err)
@@ -54,9 +66,7 @@ router.post('/stacks', jwtAuth, (req, res) => {
 
   // create and return new stack
   return User.update( {username}, {$push: { 'saved_stacks': newStack }} )
-  .then( () => {
-    return res.json(newStack);
-  })
+  .then( (data) => res.json(newStack))
   .catch( err => {
     console.error(err)
     return res.status(500).json({message: `Internal server error`})
@@ -67,7 +77,7 @@ router.post('/stacks', jwtAuth, (req, res) => {
 router.delete('/stacks/:code', jwtAuth, (req, res) => {
   const code = req.params.code;
   const username = req.user.username;
-  return User.update( {username}, {$pull: { 'saved_stacks': { $elemMatch: { code }}} } )
+  return User.update( {username}, {$pull: { 'saved_stacks': { code }} } )
   .then( (data) => {
      if(data.nModified > 0) {
         return res.sendStatus(204);
@@ -81,6 +91,7 @@ router.delete('/stacks/:code', jwtAuth, (req, res) => {
     return res.status(500).json({message: `Internal server error`});
   });
 })
+
 
 /*
 // UPDATE stack

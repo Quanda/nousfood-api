@@ -5,6 +5,7 @@ const { User } = require('../models/user');
 const { JWT_SECRET } = require('../config');
 
 const localStrategy = new LocalStrategy((id, password, callback) => {
+  console.log(`Attempting login for ${id} / ${password}`);
   let _ID;
   if(id.includes('@')) _ID = {email: id}
   else _ID = {username: id}
@@ -13,26 +14,31 @@ const localStrategy = new LocalStrategy((id, password, callback) => {
     .then(_user => {
       user = _user;
       if (!user) { 
+        console.log('Could not find user with that email or username');
         // Return a rejected promise so we break out of the chain of .thens.
         return Promise.reject({
           reason: 'LoginError',
           message: 'Could not find user with that email or username'
         }); 
       }
+      console.log('Validating pw...');
       return user.validatePassword(password);
     })
     // password invalid
     .then(isValid => {
       if (!isValid) {
+        console.log('WRONG pw');
         return Promise.reject({
           reason: 'LoginError',
           message: 'Incorrect password'
         });
       }
+      console.log('Authenticated successfully!!');
       // password is valid, return user
       return callback(null, user);
     })
     .catch(err => {
+      console.log(err);
       if (err.reason === 'LoginError') {
         return callback(null, false, err);
       }
