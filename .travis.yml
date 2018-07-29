@@ -6,7 +6,7 @@ deploy:
   provider: heroku
   api_key:
     secure: uySoFmAO2FXuO6+hqQAPU7LB+HyYwmmQd7D0BDOjsxr4yurjSEs1pLS1d1FuhHOwWhzGm0++U9RO1ZW2aM532yQBrTOpR/PaauAQpTAt9a6z4IJ5CgDSLhh2glKCF0Qdz8+dzqLU83r2Pn8Tlceub1SywIRa/BZ8NXMapl3VN4sTJRLzmZxZF6sgBDekkUZ5gR7DvB8aP+C9nCTUyLGOcsO/+1lNljYM06HM5e53xwe8QaJJIu+goPO14FejU5IHHDW2jSnsN6FVb4phzaTqUtCinkF72ZJ8hJr+S7qb/zhtOXPC4QIBfpWMvT9vwXyzTdG05oaKirW7VYGTbrYZACOBg9aRrtXICS1eaSWph5HnRmttVp8LKZQdxgIfp7HC5BHLGrrdmQmxXweKabWh/sZivbx24WBx8cTpNJ8Jr3H8axOdQsj9plVL/QfPctQBQ3SWEecrP85gIdmmMQZv0tkJcgxjDwGveUTPIpdfV28PxT0MjaUeCteL5W43QiunFaxCfZh1h91bLhRNrVEQdwJDtJ67tjszt07W1u523NcMPAtyE5mNtgzzvHJmp/mHP6thUs6Np30MsBDm4tPLkPbkPYVowpEU3YkyA1rTiGao4g5pLTouhvovgRxgesoPhY4Vi4kWg116Ur3WnyRvgfD3thkKnGc1ZQymWzpyXpA=
-  app: lit-coast-26605
+  app: nousfood-api
   on:
     repo: Quanda/nousfood-api
     branch: master
