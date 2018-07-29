@@ -9,3 +9,4 @@ deploy:
   app: lit-coast-26605
   on:
     repo: Quanda/nousfood-api
+    branch: master
