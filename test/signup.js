@@ -35,7 +35,7 @@ chai.use(chaiHttp);
       beforeEach(() =>  {});
 
       afterEach(() =>  {
-        return User.remove({});
+        return User.remove({}).catch(err => {console.error(err)});
       });
      
     describe('POST', () =>  {
