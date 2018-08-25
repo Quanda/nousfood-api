@@ -92,35 +92,29 @@ router.delete('/stacks/:code', jwtAuth, (req, res) => {
   });
 })
 
-
-/*
 // UPDATE stack
 // A protected endpoint which needs a valid JWT to access it
-router.put('/stacks/:code', jwtAuth, jsonParser, (req, res) => {
+router.put('/stacks/:code', jwtAuth, (req, res) => {
   const username = req.user.username;
   const code = req.params.code;
-  const updated = req.body;
-  console.log(`code is... ${code}`)
-  console.log('data to update...')
-  console.log(updated)
+  const updateData = req.body;
 
-  let query = { username },
-      update = {'saved_stacks.code': code},
-      options = {
-        $set: {'saved_stacks.$': updated}
-      }
+  let set = {};
+  Object.keys(updateData).forEach((key) => {
+    set['saved_stacks.$.' + key] = updateData[key];
+  })
 
-  return User.findOneAndUpdate(query, update, options)
+  let query = { username: username, "saved_stacks.code": code },
+      update = { $set: set }
+
+  return User.findOneAndUpdate(query, update)
     .then(data => {
-      console.log('returned from execute...')
-      console.log(data);
       res.json(data);
     })
     .catch(err => {
-      console.error(err)
       return res.status(500).json({message: `Internal server error`});
     })
-
 });
-*/
+
+
 module.exports = { router };
