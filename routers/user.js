@@ -40,9 +40,8 @@ router.get('/stacks', jwtAuth, (req, res) => {
 })
 
 // GET a specific saved stack
-// A protected endpoint which needs a valid JWT to access it
-router.get('/stacks/:code', jwtAuth, (req, res) => {
-  const username = req.user.username;
+router.get('/stacks/:code', (req, res) => {
+  const username = req.baseUrl.split('/')[2]
   const code = req.params.code;
 
   // return single stack
