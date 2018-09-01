@@ -12,7 +12,8 @@ const UserSchema = mongoose.Schema({
     lastname: {type: String, required: true},
     email: {type: String, required: true, unique: true},
     password: { type: String, required: true},
-    saved_stacks: [StackSchema]
+    saved_stacks: [StackSchema],
+    followed_nootropics: {type: Array, required: false}
 });
 
 UserSchema.methods.serialize = function() {

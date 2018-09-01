@@ -115,5 +115,56 @@ router.put('/stacks/:code', jwtAuth, (req, res) => {
     })
 });
 
+// POST nootropic
+// A protected endpoint which needs a valid JWT to access it
+router.post('/nootropics', jwtAuth, (req, res) => {
+  const username = req.user.username;
+  const nootropic = req.body;
+
+  // create and return new stack
+  return User.update( {username}, {$push: { 'followed_nootropics': nootropic }} )
+  .then( (data) => res.json(nootropic))
+  .catch( err => {
+    console.error(err)
+    return res.status(500).json({message: `Internal server error`})
+  });
+})
+
+// DELETE nootropic
+router.delete('/nootropics/:code', jwtAuth, (req, res) => {
+  const code = req.params.code;
+  const username = req.user.username;
+  return User.update( {username}, {$pull: { 'followed_nootropics': { code }} } )
+  .then( (data) => {
+    console.log(data)
+     if(data.nModified > 0) {
+        return res.sendStatus(204);
+     }
+     else {
+         console.log('hmm')
+         return res.sendStatus(404);
+     }
+  })
+  .catch( err => {
+    console.log(err)
+    return res.status(500).json({message: `Internal server error`});
+  });
+})
+
+// GET followed nootropics
+// A protected endpoint which needs a valid JWT to access it
+router.get('/nootropics', jwtAuth, (req, res) => {
+  const username = req.user.username;
+
+  // return followed nootropics
+  return User.findOne({username}, 'followed_nootropics')
+  .then( (data) => {
+    res.json(data.followed_nootropics);
+  })
+  .catch( err => {
+    console.error(err)
+    return res.status(500).json({message: `Internal server error`})
+  });
+})
 
 module.exports = { router };
